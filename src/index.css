@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ---------------- Fonts ---------------- */
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+h1, h2 {
+    font-family: "Roboto", sans-serif;
+}
+
+/* ---------------- Gradient Background Utility ---------------- */
+@layer utilities {
+    .gradient {
+        background: linear-gradient(135deg, #112573 10%, #822727 100%);
+    }
+
+    .animate-gradientMove {
+        animation: gradientMove 8s ease infinite; /* smooth easing */
+        background-size: 200% 200%;
+    }
+}
+
+/* ---------------- Gradient Text ---------------- */
+.animated-gradient-text {
+    background: linear-gradient(
+        90deg,
+        #ec4899,
+        #d946ef,
+        #8b5cf6,
+        #ec4899
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 6s ease infinite; /* slower & smooth */
+}
+
+/* ---------------- Keyframes ---------------- */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
