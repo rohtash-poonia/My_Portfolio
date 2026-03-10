@@ -1,5 +1,5 @@
 import React from "react";
-import Background from "../components/background";
+import Background from "../components/Background";
 import { motion } from "framer-motion";
 
 const experiences = [
