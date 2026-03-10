@@ -42,3 +42,24 @@ h1, h2 {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Improve animation smoothness */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent layout shift */
+body {
+  overflow-x: hidden;
+}
+
+/* GPU acceleration for animations */
+.motion-smooth {
+  will-change: transform;
+  transform: translateZ(0);
+}

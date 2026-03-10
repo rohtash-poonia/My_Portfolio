@@ -110,16 +110,10 @@ export default function Background() {
     // ------------------ Animation ------------------
     function animate() {
       // Gradient background
-      const gradient = ctx.createLinearGradient(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-      gradient.addColorStop(0, "#112573");
-      gradient.addColorStop(1, "#822727");
-
-      ctx.fillStyle = gradient;
+      // Solid black background
+ctx.fillStyle = "#000000"; // black
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Stars
@@ -145,7 +139,7 @@ export default function Background() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,105,180,0.9)";
+        ctx.fillStyle = "rgba(255,255,255,0.9)";
         ctx.fill();
       });
 

@@ -108,13 +108,7 @@ export default function Navbar() {
         </div>
 
         <div className="block lg:absolute lg:left-1/2 lg:transform lg:-translate-x-10 -translate-y-7">
-          <button
-            onClick={handleMenuClick}
-            className="text-white text-3xl focus:outline-none"
-            aria-label="open Menu"
-          >
-            <FiMenu />
-          </button>
+          
         </div>
 
         <div className="hidden lg:block -translate-y-6">
