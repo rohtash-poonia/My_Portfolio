@@ -27,7 +27,7 @@ const projectsData = [
     tags: ["HTML", "CSS", "JavaScript" ,"React" , "Supabase" , "PostgreSQL" , "Vercel"],
     liveLink: "https://zerodha-clone-gamma-liard.vercel.app/",
     githubLink: "https://github.com/Sajalvishwa/Zerodha-clone",
-    accentColor: "255, 62, 150",
+    accentColor: "255, 255, 255",
   },
   {
     id: 3,
