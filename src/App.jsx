@@ -1,8 +1,8 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
-import IntroScreen from "./components/Intro";
-import Nav from "./components/Nav";
-import Cursor from "./components/Cursor";
-import FullPageScroll from "./components/FullPageScroll";
+import IntroScreen from "./components/sections/Intro";
+import Nav from "./components/layout/Navbar";
+import Cursor from "./components/common/Cursor";
+import FullPageScroll from "./components/ui/FullPageScroll";
 
 // Lazy imports - Same hi rahenge
 const Home = lazy(() => import("./sections/Home"));

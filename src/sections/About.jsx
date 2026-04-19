@@ -1,12 +1,14 @@
   import { motion } from "framer-motion";
   import React from "react";
-  import p from "../assets/y.jpeg";
+  import p from "../assets/images/y.jpeg";
+  import { Link } from "react-router-dom";
+  const MotionLink = motion(Link);
 
   export default function About() {
     const stats = [
-      { label: "Experience", value: "Fresher" },
-      { label: "Speciality", value: "Full Stack Developer" },
-      { label: "Focus", value: "Learning Data Science" },
+      { label: "Experience", value: "1+ Years Exp ⚡" },
+      { label: "Speciality", value: "Frontend Developer" },
+      { label: "Focus", value: "Fast Modern Interfaces" },
     ];
 
     const glows = [
@@ -85,11 +87,11 @@
               className="flex-1 text-center md:text-left will-change-transform"
             >
               <h2 className="text-4xl sm:text-5xl md:text-5xl font-extrabold bg-gradient-to-r from-[#1cd8d2] via-[#00bf8f] to-[#1cd8d2] bg-clip-text text-transparent">
-                Sajal Vishwakarma
+                Rohtash poonia
               </h2>
 
               <p className="mt-2 text-lg text-white/90 font-semibold">
-                Full Stack Developer
+                Frontend Developer
               </p>
 
               <p className="mt-3 text-sm sm:text-base text-gray-300 leading-relaxed max-w-full sm:max-w-2xl">
@@ -126,23 +128,23 @@
                 variants={item}
                 className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
               >
-                <motion.a
-                  href="#project"
+                <MotionLink
+                  to="/projects"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-flex items-center justify-center rounded-lg bg-white text-black font-semibold px-6 py-3 transition-transform duration-300 will-change-transform"
                 >
                   View Projects
-                </motion.a>
+                </MotionLink>
 
-                <motion.a
-                  href="#contact"
+                <MotionLink
+                  to="/contact"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white px-6 py-3 transition-transform duration-300 will-change-transform"
                 >
                   Get In Touch
-                </motion.a>
+                </MotionLink>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -159,8 +161,7 @@
             </motion.h3>
 
             <motion.p variants={item} className="text-gray-300 leading-relaxed">
-              I'm passionate about building fast, resilient applications and
-              turning ideas into scalable, user-friendly products.
+           Passionate Frontend Developer building modern, scalable apps with clean code, smooth UX, and high performance. 🚀
             </motion.p>
           </motion.div>
         </div>

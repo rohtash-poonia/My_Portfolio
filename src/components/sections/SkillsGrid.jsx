@@ -1,12 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { useLayoutEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { MENULINKS, SKILLS } from "../../constants";
+import { MENULINKS, SKILLS } from "../../constants/constants";
+import rightPattern from "../../assets/images/right-pattern.svg";
 
 const Skills = () => {
   const sectionRef = useRef(null);
+
+  // Helper function to get dynamic icon path in Vite
+  const getSkillIcon = (name) => {
+    return new URL(`../../assets/images/skills/${name}.svg`, import.meta.url).href;
+  };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -38,7 +43,7 @@ const Skills = () => {
     >
       <div className="section-container py-16 flex flex-col justify-center">
         <img
-          src="/right-pattern.svg"
+          src={rightPattern}
           alt=""
           className="absolute hidden right-0 bottom-2/4 w-2/12 max-w-xs md:block"
           loading="lazy"
@@ -64,9 +69,9 @@ const Skills = () => {
             </h3>
             <div className="flex items-center flex-wrap gap-6 staggered-reveal">
               {SKILLS.languagesAndTools.map((skill) => (
-                <Image
+                <img
                   key={skill}
-                  src={`/skills/${skill}.svg`}
+                  src={getSkillIcon(skill)}
                   alt={skill}
                   width={50}
                   height={50}
@@ -80,9 +85,9 @@ const Skills = () => {
             </h3>
             <div className="flex flex-wrap gap-6 transform-gpu staggered-reveal">
               {SKILLS.librariesAndFrameworks.map((skill) => (
-                <Image
+                <img
                   key={skill}
-                  src={`/skills/${skill}.svg`}
+                  src={getSkillIcon(skill)}
                   alt={skill}
                   width={50}
                   height={50}
@@ -97,9 +102,9 @@ const Skills = () => {
               </h3>
               <div className="flex flex-wrap gap-6 transform-gpu">
                 {SKILLS.databases.map((skill) => (
-                  <Image
+                  <img
                     key={skill}
-                    src={`/skills/${skill}.svg`}
+                    src={getSkillIcon(skill)}
                     alt={skill}
                     width={50}
                     height={50}
@@ -113,9 +118,9 @@ const Skills = () => {
               </h3>
               <div className="flex flex-wrap gap-6 transform-gpu">
                 {SKILLS.other.map((skill) => (
-                  <Image
+                  <img
                     key={skill}
-                    src={`/skills/${skill}.svg`}
+                    src={getSkillIcon(skill)}
                     alt={skill}
                     width={50}
                     height={50}

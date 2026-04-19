@@ -1,24 +1,24 @@
 import React from "react";
-import Background from "../components/Background";
+import Background from "../components/ui/Background";
 import { motion } from "framer-motion";
 
 const experiences = [
   {
     id: 1,
-    role: "B.Tech - Computer Science And Engineering",
-    company: "Samrat Ashok Technological Institute",
-    period: "May 2023 - Mar 2027",
+    role: "B.Sc (Bachelor of Science)",
+    company: "Chaudhary Devi Lal University, Sirsa",
+    period: "June 2022 - April 2025",
   },
   {
     id: 2,
-    role: "Joint Entrance Examination",
-    company: "National Testing Agency",
-    period: "Feb-2022",
+   role: "Frontend Developer",
+  company: "OKK Code Pvt. Limited, Hisar",
+  period: "June 2025"
   },
   {
     id: 3,
     role: "Higher Secondary Education",
-    company: "Maa Sharda Vidyalaya",
+    company: "Mother Teresa Convent School",
     period: "Mar 2021 - Apr 2022",
   },
 ];

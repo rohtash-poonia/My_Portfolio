@@ -88,16 +88,16 @@ const Footer = () => {
 
       <footer className="footer-section">
         <div className="footer-content">
-          <div className="footer-logo">SAJAL VISHWAKARMA</div>
+          <div className="footer-logo">ROHTASH POONIA</div>
           
           <div className="footer-socials">
-            <a href="https://github.com/Sajalvishwa" target="_blank" rel="noreferrer" className="social-link"><FaGithub /></a>
-            <a href="https://www.linkedin.com/in/sajal-vishwakarma-b2008b27b/" target="_blank" rel="noreferrer" className="social-link"><FaLinkedin /></a>
-            <a href="https://www.instagram.com/__urs_sajal__/" target="_blank" rel="noreferrer" className="social-link"><FaInstagram /></a>
+            <a href="https://github.com/rohtash-poonia" target="_blank" rel="noreferrer" className="social-link"><FaGithub /></a>
+            <a href="https://www.linkedin.com/in/rohtash-poonia2274/" target="_blank" rel="noreferrer" className="social-link"><FaLinkedin /></a>
+            <a href="https://www.instagram.com/rohtash_poonia_/" target="_blank" rel="noreferrer" className="social-link"><FaInstagram /></a>
           </div>
 
           <div className="copyright">
-            <p>© {new Date().getFullYear()} Designed & Built by Sajal. ✨</p>
+            <p>© {new Date().getFullYear()} Designed & Built by Rohtash poonia. ✨</p>
           </div>
         </div>
       </footer>

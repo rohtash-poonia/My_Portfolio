@@ -1,5 +1,5 @@
-import { SplineScene } from "./splite";
-import { MENULINKS } from "./constants";
+import { SplineScene } from "../ui/Splite";
+import { MENULINKS } from "../../constants/constants";
 
 const Hero = () => {
   return (

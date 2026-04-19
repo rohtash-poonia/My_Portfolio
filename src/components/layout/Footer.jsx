@@ -2,17 +2,18 @@
 import { useState } from "react";
 import { Fade } from "react-reveal";
 import { Howl } from "howler";
-import Button from "../Button/Button";
-import FooterBg from "./FooterBg/FooterBg";
-import Profiles from "../Profiles/Profiles";
-import { theme } from "tailwind.config";
-import { MENULINKS } from "../../constants";
+import Button from "../common/Button";
+import FooterBg from "./FooterBg";
+import Profiles from "../common/Profiles";
+import { MENULINKS } from "../../constants/constants";
+import heartClickSoundFile from "../../assets/audio/glug-a.mp3";
+import footerCurve from "../../assets/images/footer-curve.svg";
 
 const Footer = () => {
   const [playbackRate, setPlaybackRate] = useState(0.75);
 
   const heartClickSound = new Howl({
-    src: ["/sounds/glug-a.mp3"],
+    src: [heartClickSoundFile],
     rate: playbackRate,
     volume: 0.5,
   });
@@ -24,10 +25,7 @@ const Footer = () => {
 
   return (
     <footer
-      className="w-full relative select-none bg-cover"
-      style={{
-        backgroundImage: `linear-gradient(to right, ${theme.colors.indigo.light}, ${theme.colors.indigo.dark})`,
-      }}
+      className="w-full relative select-none bg-cover bg-gradient-to-r from-indigo-900 to-indigo-700"
     >
       <FooterBg />
       <Fade bottom distance={"4rem"}>
@@ -41,7 +39,7 @@ const Footer = () => {
             </div>
             <div className="pt-4 text-center">
               <Button
-                href={`#${MENULINKS[4].ref}`}
+                href={`#${MENULINKS[5].ref}`}
                 classes="link"
                 type="secondary"
               >
@@ -53,13 +51,13 @@ const Footer = () => {
               <button onClick={handleClick} className="link cursor-none">
                 <span className="block animate-bounce">❤️</span>
               </button>{" "}
-              by <span className="text-white">Aditya Magar</span>
+              by <span className="text-white">Rohtash poonia</span>
             </p>
           </div>
         </div>
       </Fade>
       <img
-        src="/footer-curve.svg"
+        src={footerCurve}
         className="w-full rotate-180"
         alt="footer curve"
         loading="eager"

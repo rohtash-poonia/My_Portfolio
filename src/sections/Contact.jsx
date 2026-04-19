@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import AstraImg from '../assets/Astra.png'; 
-import chargeUpSoundFile from '../components/charge-up.wav'; 
+import AstraImg from '../assets/images/Astra.png'; 
+import chargeUpSoundFile from '../assets/audio/charge-up.wav'; 
 import Footer from './Footer'; 
 
 const Contact = () => {
@@ -26,9 +26,9 @@ const Contact = () => {
     e.preventDefault();
     playSound(); 
 
-    const SERVICE_ID = "service_am9a3zs"; 
-    const TEMPLATE_ID = "template_s6dw7ho"; 
-    const PUBLIC_KEY = "epjVuwK14SdcRBUzU"; 
+    const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
       .then((result) => {
@@ -183,7 +183,7 @@ const Contact = () => {
         `}
       </style>
 
-      <div className="contact-wrapper">
+      <div id="contact" className="contact-wrapper">
         <div className="stars-container">
           {[...Array(30)].map((_, i) => (
             <div key={i} className="star" style={{

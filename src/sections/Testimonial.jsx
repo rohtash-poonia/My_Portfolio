@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Image import (Make sure the path is correct based on your folder structure)
-import loImage from "../assets/lo.jpeg"; 
-import aoImage from "../assets/av.png"; 
+import aoImage from "../assets/images/av.png"; 
 
 export default function TestimonialsPage() {
   const testimonials = [
@@ -11,7 +10,7 @@ export default function TestimonialsPage() {
       quote: "This is not a typical portfolio website. I genuinely enjoyed exploring this website. It contains excellent animations, smooth transitions, and many impressive web features. The experience feels almost like watching a movie, with every section showcasing different features and great detailing. My favourite part is the cursor feature and the robot following the cursor.",
       name: "Astha Vishwakarma",
       designation: "Software Engineer at HSBC",
-      src: loImage, // Aapki local image yahan apply ho gayi hai
+      src: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop", // Professional female profile image
     },
     {
       quote: "I appreciated the intent behind creating a user-interactive portfolio. The overall experience across the pages felt smooth and easy to navigate, making the website engaging to explore.However, the design could benefit from slightly limiting the colour variations to create a more cohesive and refined visual experience. Overall, it is a well-thought-out portfolio with a strong interactive approach.",

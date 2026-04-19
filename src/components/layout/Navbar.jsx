@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Menu from "./Menu";
-import SV from "../assets/SV.png"; // your logo
+import SV from "../../assets/images/SV.png"; // your logo
 import { FiMenu } from "react-icons/fi";
-import clickSoundFile from "./key5.wav";
-import backgroundSongFile from "./song.mp3"; // ✅ import background music
+import clickSoundFile from "../../assets/audio/key5.wav";
+import backgroundSongFile from "../../assets/audio/song.mp3"; // ✅ import background music
 
 export default function Navbar() {
   const [menuopen, setMenuopen] = useState(false);

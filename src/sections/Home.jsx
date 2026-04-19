@@ -1,14 +1,14 @@
 // Is code ko apne Home.jsx mein rakhein (optimized version)
 import React, { useMemo, useEffect, useState, useRef } from "react";
-import Background from "../components/Background";
+import Background from "../components/ui/Background";
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
-import Hero from "../components/Hero.jsx";
-import clickSoundFile from "../components/multi-pop.mp3";
+import Hero from "../components/sections/Hero";
+import clickSoundFile from "../assets/audio/multi-pop.mp3";
 
 const socials = [
-  { Icon: FaLinkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/sajal-vishwakarma-b2008b27b/" },
-  { Icon: FaGithub, label: "GitHub", href: "https://github.com/Sajalvishwa" },
+  { Icon: FaLinkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/rohtash-poonia2274/" },
+  { Icon: FaGithub, label: "GitHub", href: "https://github.com/rohtash-poonia" },
 ];
 
 const glowVariants = {
@@ -18,7 +18,7 @@ const glowVariants = {
 };
 
 export default function Home() {
-  const roles = useMemo(() => ["Mern Stack Developer", "Software Developer", "React Developer"], []);
+  const roles = useMemo(() => ["Front-end Developer", "Software Developer", "React & Next.js Developer","Web Developer",], []);
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
@@ -61,7 +61,7 @@ export default function Home() {
 
             <motion.h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
               <span className="animated-gradient-text">Hello, I'm </span>
-              <span className="text-pink-400 hover:text-pink-500 transition-colors duration-300">Sajal Vishwakarma</span>
+              <span className="text-pink-400 hover:text-pink-500 transition-colors duration-300">Rohtash poonia</span>
             </motion.h1>
 
             <motion.p className="mt-6 text-base sm:text-lg md:text-xl text-gray-300 max-w-xl">
@@ -69,7 +69,7 @@ export default function Home() {
             </motion.p>
 
             <div className="mt-10 flex flex-wrap items-center gap-6">
-              <a href="/resume.pdf" download onClick={handleClickSound} className="px-8 py-3 rounded-full text-lg font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-105 transition-all">
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" onClick={handleClickSound} className="px-8 py-3 rounded-full text-lg font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-105 transition-all">
                 My Resume
               </a>
               <div className="flex gap-5 text-2xl md:text-3xl">

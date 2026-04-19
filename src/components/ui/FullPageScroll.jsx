@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const sectionVariants = {
   enter: (direction) => ({
@@ -10,7 +11,7 @@ const sectionVariants = {
     y: '0%',
     opacity: 1,
     transition: {
-      duration: 0.8,
+      duration: 0.6,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -25,12 +26,33 @@ const sectionVariants = {
 };
 
 export default function FullPageScroll({ children }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const sections = React.Children.toArray(children);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Mapping of paths to indices
+  const paths = [
+    "/",
+    "/about",
+    "/skills",
+    "/projects",
+    "/experience",
+    "/testimonials",
+    "/contact"
+  ];
+
+  // Helper to find index from path
+  const getIndexFromPath = useCallback((pathname) => {
+    if (pathname === "/") return 0;
+    const idx = paths.indexOf(pathname);
+    return idx === -1 ? 0 : idx;
+  }, []);
+
+  const [activeIndex, setActiveIndex] = useState(() => getIndexFromPath(location.pathname));
   const [direction, setDirection] = useState(1);
   const cooldown = useRef(false);
-  const activeRef = useRef(0);
+  const activeRef = useRef(activeIndex);
   const touchY = useRef(0);
-  const sections = React.Children.toArray(children);
 
   useEffect(() => {
     activeRef.current = activeIndex;
@@ -44,20 +66,43 @@ export default function FullPageScroll({ children }) {
     cooldown.current = true;
     setDirection(dir);
 
-    requestAnimationFrame(() => {
-      setActiveIndex(newIndex);
-    });
+    // Update URL - This will trigger the useEffect below to update activeIndex
+    navigate(paths[newIndex]);
 
     const cooldownTimer = setTimeout(() => {
       cooldown.current = false;
-    }, 1200);
+    }, 1000); // 1s cooldown is usually enough with 0.6s animation
 
     return () => clearTimeout(cooldownTimer);
-  }, [sections.length]);
+  }, [sections.length, navigate]);
+
+  // Sync state with URL changes
+  useEffect(() => {
+    const newIdx = getIndexFromPath(location.pathname);
+    if (newIdx !== activeRef.current) {
+      const dir = newIdx > activeRef.current ? 1 : -1;
+      setDirection(dir);
+      setActiveIndex(newIdx);
+    }
+  }, [location.pathname, getIndexFromPath]);
+
+  // Expose goTo globally for components that might not use Link
+  useEffect(() => {
+    window.__fullPageGoTo = (index) => {
+      const dir = index > activeRef.current ? 1 : -1;
+      goTo(index, dir);
+    };
+    return () => { delete window.__fullPageGoTo; };
+  }, [goTo]);
 
   useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
+      
+      // Fast rejection: check cooldown and threshold immediately
+      if (cooldown.current) return;
+      if (Math.abs(e.deltaY) < 40) return; // Sensitivity threshold (ignore small jitters)
+
       const idx = activeRef.current;
       if (e.deltaY > 0 && idx < sections.length - 1) goTo(idx + 1, 1);
       else if (e.deltaY < 0 && idx > 0) goTo(idx - 1, -1);

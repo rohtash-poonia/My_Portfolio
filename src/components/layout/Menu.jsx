@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX } from "react-icons/fi";
-import clickSoundFile from "./mouse-click.mp3"; // ✅ import MP3
+import clickSoundFile from "../../assets/audio/mouse-click.mp3"; // ✅ import MP3
+
+import { Link } from "react-router-dom";
 
 export default function Menu({ isOpen, onClose }) {
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
@@ -49,13 +51,13 @@ export default function Menu({ isOpen, onClose }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + index * 0.1 }}
               >
-                <a
-                  href={`#${item.toLowerCase()}`}
+                <Link
+                  to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
                   onClick={handleClose} // also plays sound
                   className="text-4xl text-white font-semibold hover:text-pink-400 transition-colors duration-300"
                 >
                   {item}
-                </a>
+                </Link>
               </motion.li>
             ))}
           </ul>

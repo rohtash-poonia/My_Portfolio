@@ -1,34 +1,48 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 
-import img1 from "../assets/ko.png";
-import img2 from "../assets/i.png";
-import img3 from "../assets/Screenshot 2026-04-05 124850.png";
+import img1 from "../assets/images/ko.png";
+import img2 from "../assets/images/i.png";
+import img3 from "../assets/images/Screenshot 2026-04-05 124850.png";
 
 
 
 const projectsData = [
   {
-    id: 1,
-    title: "WanderLust",
-    description: "Full stack travel application.",
-    image: img2,
-    tags: ["Express", "Node", "MongoDB", "Ejs", "Cloudinary"],
-    liveLink: "https://wanderlust-exqa.onrender.com/",
-    githubLink: "https://github.com/Sajalvishwa/wanderlust",
-    accentColor: "220, 53, 69",
-
-  },
-  {
-    id: 2,
-    title: "Trading App",
-    description: "A modern Zerodha-inspired stock trading platform",
-    image: img3,
-    tags: ["HTML", "CSS", "JavaScript" ,"React" , "Supabase" , "PostgreSQL" , "Vercel"],
-    liveLink: "https://zerodha-clone-gamma-liard.vercel.app/",
-    githubLink: "https://github.com/Sajalvishwa/Zerodha-clone",
-    accentColor: "87, 185, 255",
-  },
+  id: 1,
+  title: "IcyTales",
+  description: "A modern ice cream eCommerce website to explore flavors, browse products, and enjoy a smooth, visually engaging shopping experience.",
+  image: img2,
+  tags: [
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "JavaScript",
+    "UI/UX",
+    "Responsive Design"
+  ],
+  liveLink: "https://wanderlust-exqa.onrender.com/",
+  githubLink: "https://github.com/Sajalvishwa/wanderlust",
+  accentColor: "236, 72, 153"
+},
+ {
+  id: 2,
+  title: "Task Master",
+  description: "A modern task management app to add, track, and complete tasks with real-time updates and a clean, responsive UI.",
+  image: img3,
+  tags: [
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "JavaScript",
+    "Supabase",
+    "PostgreSQL",
+    "Vercel"
+  ],
+  liveLink: "https://task-master-one-delta.vercel.app/",
+  githubLink: "https://github.com/rohtash-poonia/Task-Master.git",
+  accentColor: "139, 92, 246"
+},
   {
     id: 3,
     title: "Portfolio Website",

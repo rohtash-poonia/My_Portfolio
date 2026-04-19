@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Tabs from "./Tabs/Tabs";
-import StickyScroll from "./StickyScroll/StickyScroll";
-import { MENULINKS, WORK_CONTENTS } from "../../constants";
+import Tabs from "../ui/Tabs";
+import StickyScroll from "../ui/StickyScroll";
+import { MENULINKS, WORK_CONTENTS } from "../../constants/constants";
+import leftPattern from "../../assets/images/left-pattern.svg";
 
 const Work = ({ isDesktop }) => {
   const sectionRef = useRef(null);
@@ -13,7 +14,7 @@ const Work = ({ isDesktop }) => {
       {
         title: "Spinacho",
         value: "spinacho",
-        image: "/experiece_logo/spinacho.png",
+        image: new URL("../../assets/images/spinacho.png", import.meta.url).href,
         content: (
           <StickyScroll
             isDesktop={isDesktop}
@@ -24,7 +25,7 @@ const Work = ({ isDesktop }) => {
       {
         title: "RevoltroneX",
         value: "revoltronex",
-        image: "/experiece_logo/revoltronx.png",
+        image: new URL("../../assets/images/revoltronx.png", import.meta.url).href,
         content: (
           <StickyScroll
             isDesktop={isDesktop}
@@ -35,7 +36,7 @@ const Work = ({ isDesktop }) => {
       {
         title: "Liberdat",
         value: "liberdat",
-        image: "/experiece_logo/liberdat.jpeg",
+        image: new URL("../../assets/images/liberdat.jpeg", import.meta.url).href,
         content: (
           <StickyScroll
             isDesktop={isDesktop}
@@ -72,12 +73,12 @@ const Work = ({ isDesktop }) => {
   return (
     <section
       ref={sectionRef}
-      id={MENULINKS[3].ref}
+      id={MENULINKS[4].ref}
       className="w-full relative select-none xs:mt-40 sm:mt-72 mb-96"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/left-pattern.svg"
+        src={leftPattern}
         className="absolute hidden left-0 -top-1/4 w-1/12 max-w-xs md:block"
         loading="lazy"
         height={700}

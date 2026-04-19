@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef } from "react";
-import Image from "next/image";
+import { Link } from "react-router-dom";
 import { Howl } from "howler";
-import SoundBar from "./SoundBar/SoundBar";
+import SoundBar from "./SoundBar";
+import logo from "../../assets/images/logo.svg";
+import multiPopFile from "../../assets/audio/multi-pop.mp3";
 
 const multiPop = new Howl({
-  src: ["/sounds/multi-pop.mp3"],
+  src: [multiPopFile],
 });
 
 const Header = ({ children }) => {
@@ -31,14 +33,14 @@ const Header = ({ children }) => {
   return (
     <nav className="w-full fixed top-0 py-8 z-50 select-none bg-gradient-to-b from-black shadow-black transition-all duration-300">
       <div className="flex justify-between section-container">
-        <a href="#home" className="link">
-          <Image
-            src="/logo.svg"
-            alt="Logo - Aditya Magar"
+        <Link to="/" className="link">
+          <img
+            src={logo}
+            alt="Logo - Rohtash poonia"
             width={25}
             height={25}
           />
-        </a>
+        </Link>
         <div className="outer-menu relative flex items-center gap-8 z-[1]">
           <a
             href="https://drive.google.com/file/d/1L4OQ1YsnwN4hNv8b_5_vqhSYkhqnqG92/view?usp=sharing"

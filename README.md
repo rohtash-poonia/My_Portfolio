@@ -1,4 +1,4 @@
-🚀 Sajal Vishwakarma – Portfolio
+🚀 Rohtash poonia – Portfolio
 
 
 
@@ -68,9 +68,9 @@ If you want stats in future, add this 👇
 📩 Backend contact form integration
 👨‍💻 Developer
 
-Sajal Vishwakarma
+Rohtash poonia
 
-GitHub: @Sajalvishwa
+GitHub: @rohtash-poonia
 Portfolio: https://portfolio-omega-seven-l7y6bvxpew.vercel.app/
 ⭐ Support
 
