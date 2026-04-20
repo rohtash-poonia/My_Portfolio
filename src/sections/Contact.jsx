@@ -205,7 +205,7 @@ const Contact = () => {
             <h2>Let's Connect</h2>
             <form ref={form} onSubmit={sendEmail}>
               <input type="text" name="from_name" placeholder="Full Name" className="input-style" required />
-              <input type="email" name="reply_to" placeholder="Email Address" className="input-style" required />
+              <input type="email" name="from_email" placeholder="Email Address" className="input-style" required />
               
               <select name="service" className="input-style" defaultValue="" required>
                 <option value="" disabled>Select Service</option>

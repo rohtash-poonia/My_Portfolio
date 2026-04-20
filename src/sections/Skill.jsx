@@ -92,9 +92,9 @@ export default function Skills() {
       </motion.p>
 
       {/* Marquee */}
-      <div className="relative z-10 w-full overflow-hidden">
+      <div className="relative z-10 w-full overflow-hidden py-10">
         <motion.div
-          className="flex gap-10 sm:gap-20 text-4xl sm:text-5xl whitespace-nowrap"
+          className="flex gap-10 sm:gap-20 text-4xl sm:text-5xl whitespace-nowrap items-center"
           animate={{ x: ["0%", "-50%"] }}
           transition={{
             repeat: Infinity,
