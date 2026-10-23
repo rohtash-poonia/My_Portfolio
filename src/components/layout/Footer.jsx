@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { Fade } from "react-reveal";
 import { Howl } from "howler";

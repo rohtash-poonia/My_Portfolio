@@ -4,20 +4,20 @@ import liberdatLogo from "../assets/images/liberdat.jpeg";
 
 export const METADATA = {
   author: "Rohtash Poonia",
-  title: "Portfolio | Rohtash Poonia",
+  title: "Rohtash Poonia | Full Stack Developer",
   description:
-    "Frontend Developer specializing in scalable, modern web applications with MERN stack.",
-  siteUrl: "https://sajal-vishwakarama.netlify.app/",
-  twitterHandle: "@Sajalvishwa",
+    "Full Stack Developer building responsive interfaces, backend services, REST APIs, and database-driven applications.",
+  siteUrl: "https://portfolio-omega-seven-l7y6bvxpew.vercel.app/",
+  twitterHandle: "",
   keywords: [
     "Rohtash Poonia",
-    "Frontend Developer",
+    "Full Stack Developer",
     "React Developer",
-    "Frontend Developer",
+    "Full Stack Developer",
     "Software Engineer",
     "Portfolio",
   ].join(", "),
-  image: new URL("../assets/images/preview-v2.png", import.meta.url).href,
+  image: new URL("../assets/images/optimized/logo-160.webp", import.meta.url).href,
   language: "English",
   themeColor: "#000000",
 };

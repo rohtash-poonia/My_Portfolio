@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
 // Image import (Make sure the path is correct based on your folder structure)
+import Stars from "../components/common/Stars";
 import aoImage from "../assets/images/av.png"; 
 
 export default function TestimonialsPage() {
@@ -45,6 +46,25 @@ export default function TestimonialsPage() {
   ];
 
   const [index, setIndex] = useState(0);
+  const [compact, setCompact] = useState(() => window.matchMedia('(min-width: 768px)').matches);
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 768px)');
+    const update = () => setCompact(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  const deck = useRef(null);
+  const [deckHeight, setDeckHeight] = useState(0);
+  const swipe = useRef(null);
+  const mouseSwipe = useRef(null);
+  useEffect(() => {
+    const cards = [...deck.current.children];
+    const measure = () => setDeckHeight(Math.max(0, ...cards.map(card => card.offsetHeight)));
+    const observer = new ResizeObserver(measure);
+    cards.forEach(card => observer.observe(card));
+    measure();
+    return () => observer.disconnect();
+  }, []);
 
   const nextSlide = () => setIndex((prev) => (prev + 1) % testimonials.length);
   const prevSlide = () => setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
@@ -54,7 +74,8 @@ export default function TestimonialsPage() {
       <style>
         {`
           .testimonials-wrapper {
-            min-height: 100vh;
+            height: 100vh;
+            min-height: 0;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -87,28 +108,14 @@ export default function TestimonialsPage() {
         `}
       </style>
 
-      <section className="testimonials-wrapper px-6 py-12">
+      <section id="testimonials" className="testimonials-wrapper px-6 py-12">
         {/* Twinkling Stars Background */}
-        <div className="stars-container">
-          {[...Array(40)].map((_, i) => (
-            <div
-              key={i}
-              className="star"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 3}px`,
-                height: `${Math.random() * 3}px`,
-                "--duration": `${2 + Math.random() * 3}s`,
-              }}
-            />
-          ))}
-        </div>
+        <Stars count={40} />
 
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-5xl font-bold text-white text-center mb-16 z-10" 
+          className="testimonial-heading text-4xl md:text-5xl font-bold text-white text-center mb-16 z-10"
           style={{ 
             background: 'linear-gradient(to right, #38bdf8, #ffffff)', 
             WebkitBackgroundClip: 'text', 
@@ -118,7 +125,40 @@ export default function TestimonialsPage() {
           What People Say
         </motion.h2>
 
-        <div className="relative w-full max-w-5xl h-[450px] flex items-center justify-center z-10">
+        <div ref={deck} data-testimonial-deck className="relative w-full max-w-5xl flex items-center justify-center z-10" style={{ height: deckHeight, touchAction: "pan-y", flexShrink: 0 }}
+          onPointerDown={event => {
+            // Leave text selection and interactive elements to the browser.
+            if (event.pointerType !== "mouse" || event.button !== 0 || event.shiftKey ||
+              event.target.closest("a, button, input, textarea, select, [contenteditable], p, h3")) return;
+            mouseSwipe.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+            event.currentTarget.setPointerCapture(event.pointerId);
+            event.preventDefault();
+          }}
+          onPointerUp={event => {
+            const start = mouseSwipe.current;
+            mouseSwipe.current = null;
+            if (!start || start.id !== event.pointerId) return;
+            if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+            const dx = start.x - event.clientX;
+            const dy = start.y - event.clientY;
+            if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+              if (dx > 0) nextSlide(); else prevSlide();
+            }
+          }}
+          onPointerCancel={() => { mouseSwipe.current = null; }}
+          onLostPointerCapture={() => { mouseSwipe.current = null; }}
+          onTouchStart={event => { swipe.current = { x: event.touches[0].clientX, y: event.touches[0].clientY }; }}
+          onTouchEnd={event => {
+            const start = swipe.current;
+            swipe.current = null;
+            if (!start) return;
+            const dx = start.x - event.changedTouches[0].clientX;
+            const dy = start.y - event.changedTouches[0].clientY;
+            if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+              event.stopPropagation();
+              if (dx > 0) nextSlide(); else prevSlide();
+            }
+          }}>
           {testimonials.map((t, i) => {
             let offset = i - index;
             if (offset < -Math.floor(testimonials.length / 2)) offset += testimonials.length;
@@ -129,21 +169,25 @@ export default function TestimonialsPage() {
             return (
               <motion.div
                 key={i}
+                aria-hidden={!isActive}
+                data-active={isActive}
+                style={{ maxWidth: "calc(100vw - 48px)" }}
                 initial={false}
                 animate={{ 
                   opacity: isActive ? 1 : 0.3, 
                   scale: isActive ? 1 : 0.7, 
-                  x: offset * 250, // Card spacing badha di gayi hai desktop ke liye
+                  x: offset * (compact ? 200 : 250),
                   zIndex: 10 - Math.abs(offset),
                   filter: isActive ? "blur(0px)" : "blur(2px)"
                 }}
                 transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                className="absolute w-[320px] md:w-[450px] bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 text-white shadow-2xl flex flex-col items-center"
+                className="testimonial-card absolute w-[320px] md:w-[450px] bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 text-white shadow-2xl flex flex-col items-center"
               >
-                <div className="relative mb-6">
+                <div className="testimonial-portrait relative mb-6">
                   <img
                     src={t.src}
                     alt={t.name}
+                    draggable={false}
                     className="w-24 h-24 rounded-full ring-4 ring-sky-500/30 object-cover shadow-lg"
                   />
                   {isActive && (
@@ -154,7 +198,7 @@ export default function TestimonialsPage() {
                   )}
                 </div>
 
-                <p className="text-lg md:text-xl mb-6 italic text-center text-gray-100 leading-relaxed">
+                <p className="testimonial-quote text-lg md:text-xl mb-6 italic text-center text-gray-100 leading-relaxed">
                   "{t.quote}"
                 </p>
                 
@@ -168,14 +212,16 @@ export default function TestimonialsPage() {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex gap-8 mt-16 z-10">
+        <div className="testimonial-controls flex gap-8 mt-16 z-10">
           <button
+            type="button" aria-label="Previous testimonial"
             onClick={prevSlide}
             className="group flex items-center justify-center w-14 h-14 rounded-full bg-white/5 border border-white/10 text-white hover:bg-sky-500/20 transition-all duration-300 backdrop-blur-md"
           >
             <span className="group-hover:-translate-x-1 transition-transform">←</span>
           </button>
           <button
+            type="button" aria-label="Next testimonial"
             onClick={nextSlide}
             className="group flex items-center justify-center w-14 h-14 rounded-full bg-sky-500/80 text-black font-bold hover:bg-white transition-all duration-300 shadow-lg shadow-sky-500/20"
           >

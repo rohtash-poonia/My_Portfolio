@@ -6,7 +6,7 @@ import Cursor from "@/components/Cursor/Cursor";
 
 const Custom404 = () => {
   const router = useRouter();
-  const [isDesktop, setIsDesktop] = useState(true);
+  const [isDesktop] = useState(() => typeof window.orientation === "undefined" && !navigator.userAgent.includes("IEMobile"));
   const milkSpillLargeRef = useRef(null);
   const faceRef = useRef(null);
   const leftEyeRef = useRef(null);
@@ -20,7 +20,7 @@ const Custom404 = () => {
       navigator.userAgent.indexOf("IEMobile") === -1;
     history.scrollRestoration = "manual";
 
-    setIsDesktop(result);
+
 
     // Milk Spill
     gsap.to(milkSpillLargeRef.current, {

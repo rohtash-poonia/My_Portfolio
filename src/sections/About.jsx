@@ -7,7 +7,7 @@
   export default function About() {
     const stats = [
       { label: "Experience", value: "1+ Years Exp ⚡" },
-      { label: "Speciality", value: "Frontend Developer" },
+      { label: "Speciality", value: "Full Stack Developer" },
       { label: "Focus", value: "Fast Modern Interfaces" },
     ];
 
@@ -57,9 +57,9 @@
           ))}
         </div>
 
-        <div className="relative z-10 max-w-6xl w-full mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
+        <div className="relative z-10 max-w-6xl w-full mx-auto px-4 sm:px-6 md:px-10 lg:px-12 about-content">
           <motion.div
-            className="flex flex-col md:flex-row items-center justify-start md:justify-center gap-10 pt-16 sm:pt-20 md:pt-0"
+            className="about-main flex flex-col md:flex-row items-center justify-start md:justify-center gap-10 pt-16 sm:pt-20 md:pt-0"
             variants={container}
             initial="hidden"
             animate="show"
@@ -67,7 +67,7 @@
             {/* Image */}
             <motion.div
               variants={item}
-              className="relative w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[240px] md:h-[240px] rounded-2xl overflow-hidden shadow-xl border border-white/10"
+              className="about-portrait relative w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[240px] md:h-[240px] rounded-2xl overflow-hidden shadow-xl border border-white/10"
               whileHover={{ scale: 1.03 }}
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
               style={{ willChange: "transform" }}
@@ -91,7 +91,7 @@
               </h2>
 
               <p className="mt-2 text-lg text-white/90 font-semibold">
-                Frontend Developer
+                Full Stack Developer
               </p>
 
               <p className="mt-3 text-sm sm:text-base text-gray-300 leading-relaxed max-w-full sm:max-w-2xl">
@@ -100,7 +100,7 @@
               </p>
 
               {/* Stats */}
-              <div className="mt-6 mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="about-stats mt-6 mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {stats.map((itemStat, i) => (
                   <motion.div
                     key={i}
@@ -126,7 +126,7 @@
               {/* Buttons */}
               <motion.div
                 variants={item}
-                className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+                className="about-actions mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
               >
                 <MotionLink
                   to="/projects"
@@ -151,7 +151,7 @@
 
           {/* Extra About */}
           <motion.div
-            className="mt-12 text-center max-w-3xl mx-auto will-change-transform"
+            className="about-extra mt-12 text-center max-w-3xl mx-auto will-change-transform"
             variants={container}
             initial="hidden"
             animate="show"
@@ -161,14 +161,14 @@
             </motion.h3>
 
             <motion.p variants={item} className="text-gray-300 leading-relaxed">
-           Passionate Frontend Developer building modern, scalable apps with clean code, smooth UX, and high performance. 🚀
+           Passionate Full Stack Developer building modern, scalable apps with clean code, smooth UX, and high performance. 🚀
             </motion.p>
           </motion.div>
         </div>
 
         {/* Mouse Scroll Indicator */}
     <motion.div
-    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-red-400"
+    className="about-scroll absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-red-400"
     animate={{ y: [0, 12, 0] }}
     transition={{ repeat: Infinity, duration: 1.6 }}
   >

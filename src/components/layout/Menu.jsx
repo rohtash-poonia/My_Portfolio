@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX } from "react-icons/fi";
 import clickSoundFile from "../../assets/audio/mouse-click.mp3"; // ✅ import MP3
@@ -5,14 +6,26 @@ import clickSoundFile from "../../assets/audio/mouse-click.mp3"; // ✅ import M
 import { Link } from "react-router-dom";
 
 export default function Menu({ isOpen, onClose }) {
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
-  const origin = isMobile ? "95% 8%" : "50% 8%";
+  const origin = "95% 8%";
 
   // create Audio object from imported file
-  const clickSound = new Audio(clickSoundFile);
+  const dialog = useRef(null);
+  const clickSound = useRef(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    const previous = document.activeElement;
+    const escape = event => {
+      if (event.key === 'Escape') { event.preventDefault(); onClose(); }
+    };
+    document.addEventListener('keydown', escape);
+    const frame = requestAnimationFrame(() => dialog.current?.querySelector('button')?.focus());
+    return () => { document.removeEventListener('keydown', escape); cancelAnimationFrame(frame); previous?.focus(); };
+  }, [isOpen, onClose]);
 
   const handleClose = () => {
-    clickSound.play(); // play the sound
+    if (!clickSound.current) clickSound.current = new Audio(clickSoundFile);
+    clickSound.current.currentTime = 0;
+    clickSound.current.play().catch(() => {});
     onClose();         // close the menu
   };
 
@@ -20,12 +33,22 @@ export default function Menu({ isOpen, onClose }) {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center z-50"
+          ref={dialog} role="dialog" aria-modal="true" aria-label="Navigation"
+          onKeyDown={event => {
+            if (event.key === 'Escape') { event.stopPropagation(); handleClose(); }
+            if (event.key === 'Tab') {
+              const items = [...dialog.current.querySelectorAll('button, a')];
+              const first = items[0], last = items.at(-1);
+              if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+              else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            }
+          }}
+          className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto"
           initial={{ clipPath: `circle(0% at ${origin})` }}
           animate={{ clipPath: `circle(150% at ${origin})` }}
           exit={{ clipPath: `circle(0% at ${origin})` }}
           transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-          style={{ backgroundColor: "rgba(0,0,0,0.95)" }}
+          style={{ backgroundColor: "rgba(0,0,0,0.95)", alignItems: "safe center" }}
         >
           <button
             onClick={handleClose}
@@ -35,7 +58,7 @@ export default function Menu({ isOpen, onClose }) {
             <FiX />
           </button>
 
-          <ul className="space-y-6 text-center">
+          <ul className="space-y-6 text-center py-2">
             {[
               "Home",
               "About",

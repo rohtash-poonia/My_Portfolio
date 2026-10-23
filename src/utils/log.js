@@ -10,7 +10,7 @@ export const displayFancyLogs = () => {
   );
 
   console.log(
-    "%c 💡 Flutter Developer | Building scalable mobile experiences",
+    "%c 💡 Full Stack Developer | Building complete web applications",
     "color: #6b17e8; font-style: italic; padding: 6px;"
   );
 };

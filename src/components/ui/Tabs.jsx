@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import clickSoundFile from "../../assets/audio/mouse-click.mp3";
 import { motion } from "framer-motion";
 import { cn } from "utils/cn";
 
 const Tab = ({ index, tab, activeTab, handleOnClick, setIsHovering }) => {
   return (
     <button
-      onMouseDown={() => handleOnClick(index)}
+      onClick={() => handleOnClick(index)}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       className="relative px-4 py-1 rounded-full cursor-none"
@@ -28,7 +29,6 @@ const Tab = ({ index, tab, activeTab, handleOnClick, setIsHovering }) => {
         )}
       >
         {tab.image && (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={tab.image}
             alt={`${tab.title} logo`}
@@ -68,11 +68,9 @@ const TabsContent = ({ tabs, isHovering }) => {
   );
 };
 
-const mouseClickSound = new Howl({
-  src: ["/sounds/mouse-click.mp3"],
-});
 
 const Tabs = ({ tabItems }) => {
+  const sound = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
   const [tabs, setTabs] = useState(tabItems);
   const [activeTab, setActiveTab] = useState(tabItems[0]);
@@ -83,7 +81,8 @@ const Tabs = ({ tabItems }) => {
     updatedTabs.unshift(selectedTab[0]);
     setTabs(updatedTabs);
     setActiveTab(updatedTabs[0]);
-    mouseClickSound.play();
+    if (!sound.current) sound.current = new Audio(clickSoundFile);
+    sound.current.play().catch(() => {});
   };
 
   return (

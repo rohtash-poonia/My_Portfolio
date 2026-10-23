@@ -1,42 +1,47 @@
-import React, { useRef, useEffect, useState } from 'react';
-import emailjs from '@emailjs/browser';
-import AstraImg from '../assets/images/Astra.png'; 
-import chargeUpSoundFile from '../assets/audio/charge-up.wav'; 
-import Footer from './Footer'; 
+import { useRef, useState } from "react";
+import AstraImg from "../assets/images/optimized/astra-450.webp";
+import AstraLarge from "../assets/images/optimized/astra-900.webp";
+import Stars from "../components/common/Stars";
+import { sendContactForm } from "../utils/mailer";
+import Footer from "./Footer";
 
-const Contact = () => {
-  const form = useRef();
-  const [audio, setAudio] = useState(null);
+export default function Contact() {
+  const form = useRef(null);
+  const inFlight = useRef(false);
+  const sound = useRef(null);
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState("");
 
-  useEffect(() => {
-    const snd = new Audio(chargeUpSoundFile);
-    snd.load();
-    setAudio(snd);
-  }, []);
-
-  const playSound = () => {
-    if (audio) {
-      audio.currentTime = 0; 
-      audio.volume = 0.3;    
-      audio.play().catch(err => console.log("Sound error:", err));
-    }
+  const playSound = async () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    try {
+      if (!sound.current) {
+        const { default: source } = await import("../assets/audio/charge-up.wav");
+        sound.current = new Audio(source);
+        sound.current.volume = 0.3;
+      }
+      sound.current.currentTime = 0;
+      await sound.current.play();
+    } catch { /* Optional sound never affects delivery. */ }
   };
 
-  const sendEmail = (e) => {
-    e.preventDefault();
-    playSound(); 
-
-    const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
-      .then((result) => {
-          alert("Message Sent! 🚀");
-          form.current.reset();
-      }, (error) => {
-          alert("Error: " + error.text);
-      });
+  const sendEmail = async event => {
+    event.preventDefault();
+    if (inFlight.current) return;
+    inFlight.current = true;
+    setSending(true);
+    setStatus("");
+    try {
+      await sendContactForm(form.current);
+      setStatus("Message sent! Thanks for getting in touch.");
+      form.current.reset();
+      void playSound();
+    } catch (error) {
+      setStatus(error.message?.includes("not configured") ? error.message : "Your message could not be sent. Please try again.");
+    } finally {
+      inFlight.current = false;
+      setSending(false);
+    }
   };
 
   return (
@@ -182,56 +187,35 @@ const Contact = () => {
           }
         `}
       </style>
-
-      <div id="contact" className="contact-wrapper">
-        <div className="stars-container">
-          {[...Array(30)].map((_, i) => (
-            <div key={i} className="star" style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 3}px`,
-              height: `${Math.random() * 3}px`,
-              '--duration': `${2 + Math.random() * 3}s`
-            }} />
-          ))}
-        </div>
-
+      <section id="contact" tabIndex={-1} aria-labelledby="contact-title" className="contact-wrapper">
+        <Stars />
         <div className="main-content">
-          {/* Image Badi ho gayi aur Left shift ho gayi */}
-          <img src={AstraImg} alt="Astra" className="astra-image" />
-          
-          {/* Form Card Right shift ho gaya */}
+          <img src={AstraImg} srcSet={AstraImg + " 450w, " + AstraLarge + " 900w"} sizes="(min-width: 1100px) 450px, 350px" width="450" height="450" loading="lazy" decoding="async" alt="Floating astronaut" className="astra-image" />
           <div className="contact-card">
-            <h2>Let's Connect</h2>
-            <form ref={form} onSubmit={sendEmail}>
-              <input type="text" name="from_name" placeholder="Full Name" className="input-style" required />
-              <input type="email" name="from_email" placeholder="Email Address" className="input-style" required />
-              
-              <select name="service" className="input-style" defaultValue="" required>
+            <h2 id="contact-title">Let's Connect</h2>
+            <form ref={form} onSubmit={sendEmail} aria-busy={sending}>
+              <label className="sr-only" htmlFor="contact-name">Full Name</label>
+              <input id="contact-name" type="text" name="from_name" autoComplete="name" placeholder="Full Name" className="input-style" maxLength={120} required />
+              <label className="sr-only" htmlFor="contact-email">Email Address</label>
+              <input id="contact-email" type="email" name="from_email" autoComplete="email" placeholder="Email Address" className="input-style" maxLength={254} required />
+              <label className="sr-only" htmlFor="contact-service">Service</label>
+              <select id="contact-service" name="service" className="input-style" defaultValue="" required>
                 <option value="" disabled>Select Service</option>
+                <option value="Full Stack Development">Full Stack Development</option>
                 <option value="Web Development">Web Development</option>
-                <option value="UI/UX Design">UI/UX Design</option>
-                <option value="Mobile App">Mobile App</option>
+                <option value="Backend & REST APIs">Backend & REST APIs</option>
+                <option value="API Integration">API Integration</option>
                 <option value="Other">Other</option>
               </select>
-
-              <textarea name="message" placeholder="Message..." rows="4" className="input-style" style={{resize: 'none'}} required></textarea>
-              
-              <button 
-                type="submit" 
-                className="btn-send"
-                onMouseEnter={playSound}
-              >
-                Send Message
-              </button>
+              <label className="sr-only" htmlFor="contact-message">Message</label>
+              <textarea id="contact-message" name="message" placeholder="Message..." rows={4} className="input-style" style={{ resize: "vertical" }} maxLength={5000} required />
+              <button type="submit" className="btn-send" disabled={sending}>{sending ? "Sending..." : "Send Message"}</button>
+              <p role="status" aria-live="polite" className={status ? "mt-3 text-sm text-sky-100" : "sr-only"}>{status}</p>
             </form>
           </div>
         </div>
-
         <Footer />
-      </div>
+      </section>
     </>
   );
-};
-
-export default Contact;
+}

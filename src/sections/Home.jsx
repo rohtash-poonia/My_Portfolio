@@ -6,6 +6,8 @@ import { FaGithub, FaLinkedin } from "react-icons/fa6";
 import Hero from "../components/sections/Hero";
 import clickSoundFile from "../assets/audio/multi-pop.mp3";
 
+const combinedRole = "Node.js Developer & NestJS Developer";
+
 const socials = [
   { Icon: FaLinkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/rohtash-poonia2274/" },
   { Icon: FaGithub, label: "GitHub", href: "https://github.com/rohtash-poonia" },
@@ -18,7 +20,7 @@ const glowVariants = {
 };
 
 export default function Home() {
-  const roles = useMemo(() => ["Front-end Developer", "Software Developer", "React & Next.js Developer","Web Developer",], []);
+  const roles = useMemo(() => ["Full Stack Developer", combinedRole, "Software Developer", "React & Next.js Developer", "Web Developer"], []);
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
@@ -26,13 +28,14 @@ export default function Home() {
   // Typewriter: Cleanup automatic hota hai on unmount
   useEffect(() => {
     const current = roles[index];
+    let pause;
     const timeout = setTimeout(() => {
       if (!deleting && subIndex < current.length) { setSubIndex((v) => v + 1); }
-      else if (!deleting && subIndex === current.length) { setTimeout(() => setDeleting(true), 800); }
+      else if (!deleting && subIndex === current.length) { pause = setTimeout(() => setDeleting(true), 800); }
       else if (deleting && subIndex > 0) { setSubIndex((v) => v - 1); }
       else if (deleting && subIndex === 0) { setDeleting(false); setIndex((p) => (p + 1) % roles.length); }
     }, deleting ? 60 : 90);
-    return () => clearTimeout(timeout);
+    return () => { clearTimeout(timeout); clearTimeout(pause); };
   }, [subIndex, index, deleting, roles]);
 
   // Audio: Optimized to play only on click
@@ -53,10 +56,16 @@ export default function Home() {
       <div className="relative z-10 min-h-screen flex items-center pt-30 sm:pt-0">
         <div className="w-full max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center justify-between gap-12">
           
-          <div className="flex-1 text-left will-change-[transform,opacity]">
-            <motion.div className="text-3xl sm:text-4xl font-semibold text-white">
+          <div className="hero-copy flex-1 min-w-0 text-left will-change-[transform,opacity]">
+            <motion.div className="grid text-3xl sm:text-4xl font-semibold text-white">
+              <span aria-hidden="true" className="hero-role-combined invisible [grid-area:1/1]">
+                {roles.reduce((longest, role) => role.length > longest.length ? role : longest, "")}
+                <span className="inline-block w-[2px] ml-2 h-[2.5rem] align-middle" />
+              </span>
+              <span className={`[grid-area:1/1] ${roles[index] === combinedRole ? "hero-role-combined" : ""}`}>
               {roles[index].substring(0, subIndex)}
               <span className="inline-block w-[2px] ml-2 bg-white h-[2.5rem] align-middle animate-blink"></span>
+              </span>
             </motion.div>
 
             <motion.h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
@@ -74,7 +83,7 @@ export default function Home() {
               </a>
               <div className="flex gap-5 text-2xl md:text-3xl">
                 {socials.map(({ Icon, label, href }) => (
-                  <motion.a key={label} href={href} target="_blank" onClick={handleClickSound} variants={glowVariants} initial="initial" whileHover="hover" className="text-gray-300 hover:text-white">
+                  <motion.a key={label} aria-label={label} href={href} target="_blank" rel="noopener noreferrer" onClick={handleClickSound} variants={glowVariants} initial="initial" whileHover="hover" className="text-gray-300 hover:text-white">
                     <Icon />
                   </motion.a>
                 ))}

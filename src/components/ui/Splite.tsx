@@ -1,6 +1,14 @@
 'use client'
 
-import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
+import { Component, Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+
+class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+    state = { failed: false }
+    static getDerivedStateFromError() { return { failed: true } }
+    render() { return this.state.failed ? <div role="status" className="w-full h-full flex items-center justify-center text-gray-400 text-sm">3D scene unavailable</div> : this.props.children }
+}
+
 const Spline = lazy(() => import('@splinetool/react-spline'))
 
 interface SplineSceneProps {
@@ -39,15 +47,12 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
     useEffect(() => {
         if (!allowHeavy) return
         if (!visible) return
-        const idle = (fn: () => void) => {
-            const anyWin = window as any
-            if (anyWin.requestIdleCallback) {
-                anyWin.requestIdleCallback(fn, { timeout: 2000 })
-            } else {
-                setTimeout(fn, 1200)
-            }
+        if ('requestIdleCallback' in window) {
+            const id = window.requestIdleCallback(() => setShouldRender(true), { timeout: 2000 })
+            return () => window.cancelIdleCallback(id)
         }
-        idle(() => setShouldRender(true))
+        const timer = setTimeout(() => setShouldRender(true), 1200)
+        return () => clearTimeout(timer)
     }, [allowHeavy, visible])
 
     if (!allowHeavy) {
@@ -78,7 +83,7 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
                         </div>
                     }
                 >
-                    <Spline scene={scene} className={className} />
+                    <SceneBoundary><Spline scene={scene} className={className} /></SceneBoundary>
                 </Suspense>
             )}
         </div>

@@ -1,154 +1,82 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 
+import icyImage from "../assets/images/i.png";
 import img1 from "../assets/images/ko.png";
-import img2 from "../assets/images/i.png";
 import img3 from "../assets/images/Screenshot 2026-04-05 124850.png";
 
 
 
 const projectsData = [
   {
-  id: 1,
-  title: "IcyTales",
-  description: "A modern ice cream eCommerce website to explore flavors, browse products, and enjoy a smooth, visually engaging shopping experience.",
-  image: img2,
-  tags: [
-    "React",
-    "Next.js",
-    "Tailwind CSS",
-    "JavaScript",
-    "UI/UX",
-    "Responsive Design"
-  ],
-  liveLink: "https://wanderlust-exqa.onrender.com/",
-  githubLink: "https://github.com/Sajalvishwa/wanderlust",
-  accentColor: "236, 72, 153"
-},
- {
-  id: 2,
-  title: "Task Master",
-  description: "A modern task management app to add, track, and complete tasks with real-time updates and a clean, responsive UI.",
-  image: img3,
-  tags: [
-    "React",
-    "Next.js",
-    "Tailwind CSS",
-    "JavaScript",
-    "Supabase",
-    "PostgreSQL",
-    "Vercel"
-  ],
-  liveLink: "https://task-master-one-delta.vercel.app/",
-  githubLink: "https://github.com/rohtash-poonia/Task-Master.git",
-  accentColor: "139, 92, 246"
-},
+    id: 1,
+    title: "IcyTales",
+    description: "A modern ice cream eCommerce website to explore flavors, browse products, and enjoy a smooth, visually engaging shopping experience.",
+    image: icyImage,
+    tags: ["React", "Next.js", "Tailwind CSS", "JavaScript", "UI/UX", "Responsive Design"],
+    liveLink: "https://icylates.vercel.app/",
+    githubLink: "https://github.com/rohtash-poonia/Icytales",
+    accentColor: "236, 72, 153",
+  },
   {
-    id: 3,
+    title: "Task Master",
+    description: "A task management app to add, track, and complete tasks through a clean, responsive interface, with tasks saved locally in the browser.",
+    id: 2,
+    image: img3,
+    tags: ["React", "Next.js", "Tailwind CSS", "JavaScript", "Vercel"],
+    liveLink: "https://task-master-one-delta.vercel.app/",
+    githubLink: "https://github.com/rohtash-poonia/Task-Master",
+    accentColor: "139, 92, 246",
+  },
+  {
     title: "Portfolio Website",
-    description: "Modern responsive portfolio with animations.",
+    description: "This responsive developer portfolio brings together project showcases, interactive visuals, and an EmailJS contact form. Built with React and Vite, with assets loaded to suit the device.",
+    id: 3,
     image: img1,
-    tags: ["HTML", "CSS", "JavaScript" ,"React" , "Vite" ,"spline"],
-    liveLink: "https://sajal-vishwakarama.netlify.app/",
-    githubLink: "https://github.com/Sajalvishwa/portfolio",
+    tags: ["React", "JavaScript", "Vite", "Tailwind CSS", "EmailJS", "Spline"],
+    liveLink: "https://portfolio-omega-seven-l7y6bvxpew.vercel.app/",
+    githubLink: "https://github.com/rohtash-poonia/My_Portfolio",
     accentColor: "255, 62, 150",
   },
-  
 ];
 
-const Project = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [fade, setFade] = useState(true);
-  const [isSticky, setIsSticky] = useState(false);
-  const sectionRef = useRef(null);
-  const cooldown = useRef(false);
-  const activeRef = useRef(0);
 
+const Project = ({ entryDirection = 1 }) => {
+  const [activeIndex, setActiveIndex] = useState(() => entryDirection < 0 ? projectsData.length - 1 : 0);
+  const [fade, setFade] = useState(true);
+  const sectionRef = useRef(null);
+  const activeRef = useRef(activeIndex);
+  const fadeTimer = useRef(null);
   const project = projectsData[activeIndex];
   const accent = `rgb(${project.accentColor})`;
 
-  useEffect(() => {
-    activeRef.current = activeIndex;
-  }, [activeIndex]);
-
-  const goTo = useCallback((newIndex) => {
-    if (cooldown.current) return;
-    if (newIndex < 0 || newIndex >= projectsData.length) return;
-    if (newIndex === activeRef.current) return;
-
-    cooldown.current = true;
+  const goTo = useCallback(newIndex => {
+    if (newIndex < 0 || newIndex >= projectsData.length || newIndex === activeRef.current) return false;
+    // Update the requested index immediately so a reversal can cancel the pending fade.
+    activeRef.current = newIndex;
+    clearTimeout(fadeTimer.current);
     setFade(false);
-
-    setTimeout(() => {
-      setActiveIndex(newIndex);
-      setFade(true);
-    }, 250);
-
-    setTimeout(() => {
-      cooldown.current = false;
-    }, 700);
+    fadeTimer.current = setTimeout(() => { setActiveIndex(newIndex); setFade(true); }, 250);
+    return true;
   }, []);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsSticky(entry.isIntersecting);
-      },
-      { threshold: 0.4 }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const handleWheel = (e) => {
-      if (!isSticky) return;
-
-      const idx = activeRef.current;
-
-      if (e.deltaY > 0) {
-        if (idx < projectsData.length - 1) {
-          e.preventDefault();
-          e.stopPropagation();
-          goTo(idx + 1);
-        }
-      } else {
-        if (idx > 0) {
-          e.preventDefault();
-          e.stopPropagation();
-          goTo(idx - 1);
-        }
-      }
+    const viewport = sectionRef.current.closest('.section-viewport');
+    const onStep = event => {
+      if (goTo(activeRef.current + event.detail.direction)) event.preventDefault();
     };
-
-    const section = sectionRef.current;
-    section.addEventListener("wheel", handleWheel, { passive: false });
-
+    viewport.addEventListener('portfolio:step', onStep);
     return () => {
-      section.removeEventListener("wheel", handleWheel);
+      viewport.removeEventListener('portfolio:step', onStep);
+      clearTimeout(fadeTimer.current);
     };
-  }, [isSticky, goTo]);
-
-  const touchY = useRef(0);
+  }, [goTo]);
 
   return (
     <section
       ref={sectionRef}
       id="projects"
-      onTouchStart={(e) => {
-        touchY.current = e.touches[0].clientY;
-      }}
-      onTouchEnd={(e) => {
-        if (!isSticky) return;
-        const diff = touchY.current - e.changedTouches[0].clientY;
-        if (Math.abs(diff) < 60) return;
-        if (diff > 0) goTo(activeRef.current + 1);
-        else goTo(activeRef.current - 1);
-      }}
+      aria-label="Projects"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -219,7 +147,7 @@ const Project = () => {
           flexWrap: "wrap",
         }}
       >
-        <div style={{ flex: "1 1 400px" }}>
+        <div style={{ flex: "1 1 400px", minWidth: 0 }} aria-live="polite">
           <div
             style={{
               fontSize: "4rem",
@@ -320,7 +248,7 @@ const Project = () => {
       <div
         style={{
           position: "absolute",
-          right: "30px",
+          right: "clamp(12px, 2vw, 30px)",
           top: "50%",
           transform: "translateY(-50%)",
           display: "flex",
@@ -329,8 +257,11 @@ const Project = () => {
           zIndex: 3,
         }}
       >
-        {projectsData.map((_, i) => (
-          <div
+        {projectsData.map((item, i) => (
+          <button
+            type="button"
+            aria-label={`Show ${item.title}`}
+            aria-pressed={i === activeIndex}
             key={i}
             onClick={() => goTo(i)}
             style={{

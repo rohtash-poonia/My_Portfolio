@@ -1,77 +1,54 @@
-🚀 Rohtash poonia – Portfolio
+# Rohtash Poonia — Full Stack Developer
 
+A responsive React/Vite portfolio with the existing dark theme, gradient accents, interactive robot, project showcase, education and experience timeline, testimonials, and EmailJS contact form.
 
+Full Stack Developer | React • Next.js • Node.js • NestJS • JavaScript • TypeScript • Python • Django • MongoDB • PostgreSQL • REST APIs • API Integration • Docker • AWS • DevOps • GitHub
 
+## Development
 
+Requires Node.js compatible with Vite 7 (20.19+ or 22.12+).
 
+```sh
+npm ci
+npm run dev
+```
 
-🌐 Live Demo: https://portfolio-omega-seven-l7y6bvxpew.vercel.app/
+The portfolio is a client-rendered frontend. There is no active backend, authentication service, or database to configure. Next.js files under `src/backup` and older unused components are not part of the running Vite application.
 
-📂 GitHub Repo: https://github.com/Sajalvishwa/portfolio
+## Contact form
 
-✨ About the Project
+Copy `.env.example` to `.env` and supply your EmailJS service ID, template ID, and public key. Existing environment settings are preserved. The template receives `from_name`, `from_email`, `service`, and `message`.
 
-This is my personal developer portfolio built using modern frontend technologies.
-It showcases my skills, projects, and experience as a Full Stack Developer (MERN Track).
+Only EmailJS public configuration belongs in these `VITE_` variables. Private keys and server credentials must never be added to client-side environment variables.
 
-The goal of this portfolio is to present my work in a clean, interactive, and responsive way for recruiters and collaborators.
+## Verification
 
-⚙️ Tech Stack
-⚛️ React.js
-🎨 HTML5, CSS3
-💡 JavaScript (ES6+)
-📱 Responsive Web Design
-🚀 Vercel (Deployment)
-📌 Features
+```sh
+npm run lint
+npm run build
+npx playwright install chromium
+npm test
+```
 
-✔️ Fully Responsive UI (Mobile + Desktop)
-✔️ Smooth and clean navigation
-✔️ Projects showcase section
-✔️ About Me section
-✔️ Contact section
-✔️ Fast loading optimized build
-✔️ Deployed on Vercel
+The browser suite starts and stops a local Vite server. It verifies full-screen section transitions, small wheel gestures, immediate reversals, backward entry into tall sections, project wheel/touch navigation, the skills marquee, stacked testimonials, cursor-responsive stars, menu focus and landscape access, responsive layouts, the resume, and contact success/failure/duplicate handling. Dummy EmailJS configuration and intercepted HTTP responses prevent real email delivery. Screenshots are saved in the system temporary directory.
 
-🖼️ Preview
+There is no separate configured TypeScript checking command; Vite transpiles the existing TSX components.
 
-🔗 Live Website:
-https://portfolio-omega-seven-l7y6bvxpew.vercel.app/
+## Production
 
-📁 Folder Structure
-portfolio/
-│
-├── public/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── assets/
-│   ├── App.js
-│   └── index.js
-│
-├── package.json
-└── README.md
-🚀 Run Locally
-git clone https://github.com/Sajalvishwa/portfolio.git
-cd portfolio
-npm install
-npm start
-📊 GitHub Stats (Optional Add-on)
+```sh
+npm run build
+npm run preview
+```
 
-If you want stats in future, add this 👇
+Publish `dist`. The included `vercel.json` preserves direct section URLs such as `/projects` on Vercel. Other static hosts need an equivalent SPA fallback to `index.html`.
 
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=Sajalvishwa&show_icons=true&theme=radical)
-🌱 Future Improvements
-🌙 Dark / Light Mode toggle
-✨ Framer Motion animations
-🧠 Add blog section
-⚡ Improve SEO performance
-📩 Backend contact form integration
-👨‍💻 Developer
+The original intro, typewriter, Spline robot, star canvas, GSAP cursor, and full-screen transitions are restored from Git commit `c141552`. The robot retains its original desktop-only loading policy and dark gradient fallback for mobile/reduced-motion settings. The astronaut belongs only to the contact section. Music loads after selecting **Play Music**.
 
-Rohtash poonia
+## Images
 
-GitHub: @rohtash-poonia
-Portfolio: https://portfolio-omega-seven-l7y6bvxpew.vercel.app/
-⭐ Support
+Original artwork is retained in the restored components. Additional optimized WebP variants are available under `src/assets/images/optimized`; originals remain intact. To regenerate them, install Sharp separately and run `node scripts/optimize-images.mjs`. Sharp is not a runtime dependency.
 
-If you like this project, don’t forget to give it a ⭐ on GitHub!
+Project links and descriptions come from this repository. The three original projects are available again; IcyTales links to https://icylates.vercel.app/. The genuine historical Frontend Developer job title and education entries are preserved.
+
+See [the latest targeted-update report](docs/portfolio-oct23.md) for verification results and limitations. The earlier restoration report remains in docs/portfolio-upgrade.md.

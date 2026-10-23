@@ -1,10 +1,9 @@
 import { SplineScene } from "../ui/Splite";
-import { MENULINKS } from "../../constants/constants";
 
 const Hero = () => {
   return (
     <section
-      id={MENULINKS[0].ref}
+      aria-label="Interactive robot"
       className="w-full min-h-screen relative flex justify-center items-center"
     >
       <div className="w-full h-[75%]">

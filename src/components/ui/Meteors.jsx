@@ -1,20 +1,13 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { cn } from "utils/cn";
 
 const Meteors = ({ number = 10 }) => {
-  const [meteorStyles, setMeteorStyles] = useState([]);
-
-  useEffect(() => {
-    const styles = [...new Array(number)].map(() => ({
-      top: -5,
-      left: Math.floor(Math.random() * window.innerWidth) + "px",
-      animationDelay: Math.random() * 1 + 0.2 + "s",
-      animationDuration: Math.floor(Math.random() * 9 + 2) + "s",
-    }));
-
-    setMeteorStyles(styles);
-  }, [number]);
-
+  const meteorStyles = useMemo(() => Array.from({ length: number }, (_, index) => ({
+    top: -5,
+    left: ((index * 173 + 11) % 100) + "%",
+    animationDelay: (index % 5) * 0.2 + "s",
+    animationDuration: (2 + index % 9) + "s",
+  })), [number]);
   return (
     <>
       {[...meteorStyles].map((style, idx) => (

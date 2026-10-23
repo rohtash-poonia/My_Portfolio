@@ -1,24 +1,8 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 
-import {
-  FaJava,
-  FaReact,
-  FaHtml5,
-  FaCss3Alt,
-} from "react-icons/fa";
-
-import {
-  SiNextdotjs,
-  SiTypescript,
-  SiTailwindcss,
-  SiFastapi,
-  SiPython,
-  SiDocker,
-  SiMongodb,
-  SiAngular,
-} from "react-icons/si";
-
+import { FaReact, FaAws, FaGithub, FaInfinity, FaPlug, FaServer } from "react-icons/fa";
+import { SiNextdotjs, SiNestjs, SiJavascript, SiTypescript, SiPython, SiDjango, SiMongodb, SiPostgresql, SiDocker } from "react-icons/si";
 import { DiNodejsSmall } from "react-icons/di";
 
 export default function Skills() {
@@ -35,19 +19,22 @@ export default function Skills() {
   }, []);
 
   const skills = [
-    { icon: <FaHtml5 />, name: "HTML" },
-    { icon: <FaCss3Alt />, name: "CSS" },
-    { icon: <FaJava />, name: "Java" },
     { icon: <FaReact />, name: "React" },
     { icon: <SiNextdotjs />, name: "Next.js" },
-    { icon: <SiTypescript />, name: "TypeScript" },
-    { icon: <SiTailwindcss />, name: "Tailwind CSS" },
-    { icon: <SiFastapi />, name: "FastAPI" },
-    { icon: <SiPython />, name: "Python" },
-    { icon: <SiDocker />, name: "Docker" },
     { icon: <DiNodejsSmall />, name: "Node.js" },
+    { icon: <SiNestjs />, name: "NestJS" },
+    { icon: <SiJavascript />, name: "JavaScript" },
+    { icon: <SiTypescript />, name: "TypeScript" },
+    { icon: <SiPython />, name: "Python" },
+    { icon: <SiDjango />, name: "Django" },
     { icon: <SiMongodb />, name: "MongoDB" },
-    { icon: <SiAngular />, name: "Angular" },
+    { icon: <SiPostgresql />, name: "PostgreSQL" },
+    { icon: <FaServer />, name: "REST APIs" },
+    { icon: <SiDocker />, name: "Docker" },
+    { icon: <FaAws />, name: "AWS" },
+    { icon: <FaInfinity />, name: "DevOps" },
+    { icon: <FaGithub />, name: "GitHub" },
+    { icon: <FaPlug />, name: "API Integration" },
   ];
 
   return (
@@ -94,11 +81,12 @@ export default function Skills() {
       {/* Marquee */}
       <div className="relative z-10 w-full overflow-hidden py-10">
         <motion.div
-          className="flex gap-10 sm:gap-20 text-4xl sm:text-5xl whitespace-nowrap items-center"
+          data-skills-track
+          className="flex w-max pr-10 sm:pr-20 gap-10 sm:gap-20 text-4xl sm:text-5xl whitespace-nowrap items-center"
           animate={{ x: ["0%", "-50%"] }}
           transition={{
             repeat: Infinity,
-            duration: isMobile ? skills.length * 0.5 : 45, // 🔥 mobile fast, desktop slow
+            duration: isMobile ? skills.length * 0.5 : 45, // Keep the existing per-item mobile timing and desktop cycle.
             ease: "linear",
           }}
           style={{

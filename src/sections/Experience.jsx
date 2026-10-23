@@ -27,17 +27,17 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="relative w-full min-h-screen overflow-hidden bg-black text-white flex flex-col items-center px-4 sm:px-6 py-10 sm:py-12"
+      className="relative w-full h-screen overflow-hidden bg-black text-white flex flex-col items-center px-4 sm:px-6 py-10 sm:py-12"
       style={{ transform: "translateZ(0)" }}
     >
       {/* Background */}
       <Background />
 
-      <h2 className="text-3xl sm:text-4xl font-bold mb-10 sm:mb-12 text-center z-10 relative">
+      <h2 className="education-heading text-3xl sm:text-4xl font-bold mb-10 sm:mb-12 text-center z-10 relative">
         My Education
       </h2>
 
-      <div className="relative w-full max-w-5xl z-10">
+      <div className="education-timeline relative w-full max-w-5xl z-10">
         {/* Vertical Line (center on desktop, left on mobile) */}
         <div className="absolute left-4 sm:left-1/2 transform sm:-translate-x-1/2 top-0 bottom-0 w-[2px] bg-gray-800 rounded-full" />
 
@@ -45,17 +45,17 @@ export default function Experience() {
           const isLeft = idx % 2 !== 0;
 
           return (
-            <div key={exp.id} className="relative w-full mb-16 sm:mb-24">
+            <div key={exp.id} className="education-item relative w-full mb-16 sm:mb-24">
               
               {/* Card */}
               <motion.div
                 className={`
-                  w-full sm:w-1/2 p-5 sm:p-6 rounded-2xl border border-white/20
+                  education-card w-[calc(100%-2.5rem)] sm:w-1/2 p-5 sm:p-6 rounded-2xl border border-white/20
                   bg-gradient-to-br from-white/10 via-white/5 to-white/10
                   backdrop-blur-[16px] shadow-lg
                   ml-10 sm:ml-0
                   ${isLeft ? "sm:mr-auto" : "sm:ml-auto"}
-                  sm:sticky sm:top-1/4
+
                 `}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ export default function Experience() {
               </motion.div>
 
               {/* Timeline Dot */}
-              <div className="absolute left-4 sm:left-1/2 top-6 transform sm:-translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+              <div className="education-dot absolute left-4 sm:left-1/2 top-6 transform sm:-translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
             </div>
           );
         })}
