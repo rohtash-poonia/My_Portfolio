@@ -7,21 +7,21 @@ import { chromium } from 'playwright';
 import {pathToFileURL} from 'node:url';
 export async function verifyViewport({page,url,check,artifacts}) {
  const visit=async(route,w=1440,h=900)=>{await page.setViewportSize({width:w,height:h});if(page.url().startsWith(url)){await page.evaluate(route=>window.__fullPageGoTo(['/', '/about','/skills','/projects','/experience','/testimonials','/contact'].indexOf(route)),route);await page.waitForURL(url+route);}else await page.goto(url+route);await page.locator('#'+route.slice(1)).waitFor({timeout:30000});await page.evaluate(()=>document.fonts.ready);await page.waitForTimeout(1000);};
- for(const route of ['/about','/experience','/testimonials']) await check(route==='/about'?'About keeps its original layout with reachable content':route+' fits exactly one viewport across screen sizes',async()=>{
+ for(const route of ['/about','/experience','/testimonials']) await check(route==='/experience'?route+' fits exactly one viewport across screen sizes':route+' keeps its original layout with reachable content',async()=>{
   const failures=[];
   for(const [w,h] of (process.argv.includes("--boundary-only") ? [[1024,840],[1366,840],[768,740],[390,740]] : process.argv.includes("--landscape-only") ? [[667,375],[640,360]] : [[320,568],[390,600],[390,740],[390,844],[768,740],[768,1024],[1024,768],[1024,840],[1366,768],[1366,840],[1440,900],[844,390],[667,375],[640,360]])) {
    await visit(route,w,h);
-   if(route==='/about')await page.locator('.section-viewport').last().evaluate(el=>el.scrollTop=0);
+   if(route!=='/experience')await page.locator('.section-viewport').last().evaluate(el=>el.scrollTop=0);
    const geometry=()=>page.locator('#'+route.slice(1)).evaluate(el=>{
     const box=el.getBoundingClientRect(),panel=el.closest('.section-viewport');
     const nodes=[...el.querySelectorAll('h2,h3,p,a,button,img')].filter(n=>!n.closest('[aria-hidden="true"]'));
-    return {height:box.height,scroll:panel.scrollHeight-panel.clientHeight,bad:nodes.filter(n=>{const r=n.getBoundingClientRect();return r.top<58||r.bottom>(el.id==='about'?box.bottom:innerHeight-2)||r.left<0||r.right>innerWidth;}).map(n=>({text:n.textContent?.slice(0,30)||n.alt,box:n.getBoundingClientRect().toJSON()}))};
+    return {height:box.height,scroll:panel.scrollHeight-panel.clientHeight,bad:nodes.filter(n=>{const r=n.getBoundingClientRect();return r.top<58||r.bottom>(el.id==='experience'?innerHeight-2:box.bottom)||r.left<0||r.right>innerWidth;}).map(n=>({text:n.textContent?.slice(0,30)||n.alt,box:n.getBoundingClientRect().toJSON()}))};
    });
    for(let i=0;i<(route==='/testimonials'?6:1);i++) {
     if(artifacts && i===0 && [320,390,844,1366,1440].includes(w)) await page.screenshot({path:path.join(artifacts,'fit-'+route.slice(1)+'-'+w+'x'+h+'.png')});
-    const g=await geometry();if((route==='/about'?g.height<h-1:Math.abs(g.height-h)>1||g.scroll>1)||g.bad.length)failures.push({w,h,i,...g});
-    if(route==='/about'&&g.scroll>1){await page.locator('.section-viewport').last().evaluate(el=>el.scrollTop=el.scrollHeight);const last=await page.locator('.about-extra p').boundingBox();assert.ok(last.y>=58&&last.y+last.height<=h,'Original About content must remain reachable');}
-    if(route==='/testimonials'){await page.getByRole('button',{name:'Next testimonial',exact:true}).click();await page.waitForTimeout(700);}
+    const g=await geometry();if((route!=='/experience'?g.height<h-1:Math.abs(g.height-h)>1||g.scroll>1)||g.bad.length)failures.push({w,h,i,...g});
+    if(route!=='/experience'&&g.scroll>1){await page.locator('.section-viewport').last().evaluate(el=>el.scrollTop=el.scrollHeight);const last=await page.locator(route==='/about'?'.about-extra p':'.testimonial-controls').boundingBox();assert.ok(last.y>=58&&last.y+last.height<=h,'Original section content must remain reachable');}
+    if(route==='/testimonials'){await page.getByRole('button',{name:'Next testimonial',exact:true}).click();await page.waitForTimeout(700);await page.locator('.section-viewport').last().evaluate(el=>el.scrollTop=0);}
    }
   }
   assert.equal(failures.length,0,JSON.stringify(failures));

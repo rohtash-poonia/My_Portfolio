@@ -58,14 +58,15 @@ export async function verifyUpdates({ page, url, check, artifacts }) {
     assert.ok((await page.locator('#contact-title').boundingBox()).y>=60,'contact title is hidden');
     await page.screenshot({path:path.join(artifacts,'contact-arrival.png')});
   });
-  await check('desktop education and testimonial controls fit at 100% zoom',async()=>{
+  await check('desktop education fits and original testimonial controls remain reachable',async()=>{
     await visit('/experience',1366,768);
     const bottomOfCard=await page.locator('#experience h3').last().evaluate(el=>el.parentElement.getBoundingClientRect().bottom);
     assert.ok(bottomOfCard<=768,`last education card ends at ${bottomOfCard}`);
     await page.screenshot({path:path.join(artifacts,'education-1366.png')});
     await visit('/testimonials',1366,768);
+    await bottom();
     const button=await page.getByRole('button',{name:'Next testimonial',exact:true}).boundingBox();
-    assert.ok(button.y+button.height<=768,`testimonial controls end at ${button.y+button.height}`);
+    assert.ok(button.y>=58 && button.y+button.height<=768,`testimonial controls end at ${button.y+button.height}`);
     await page.screenshot({path:path.join(artifacts,'testimonials-1366.png')});
   });
 }

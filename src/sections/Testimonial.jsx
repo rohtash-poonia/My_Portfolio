@@ -46,13 +46,6 @@ export default function TestimonialsPage() {
   ];
 
   const [index, setIndex] = useState(0);
-  const [compact, setCompact] = useState(() => window.matchMedia('(min-width: 768px)').matches);
-  useEffect(() => {
-    const media = window.matchMedia('(min-width: 768px)');
-    const update = () => setCompact(media.matches);
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
   const deck = useRef(null);
   const [deckHeight, setDeckHeight] = useState(0);
   const swipe = useRef(null);
@@ -74,8 +67,7 @@ export default function TestimonialsPage() {
       <style>
         {`
           .testimonials-wrapper {
-            height: 100vh;
-            min-height: 0;
+            min-height: 100vh;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -176,7 +168,7 @@ export default function TestimonialsPage() {
                 animate={{ 
                   opacity: isActive ? 1 : 0.3, 
                   scale: isActive ? 1 : 0.7, 
-                  x: offset * (compact ? 200 : 250),
+                  x: offset * 250,
                   zIndex: 10 - Math.abs(offset),
                   filter: isActive ? "blur(0px)" : "blur(2px)"
                 }}
